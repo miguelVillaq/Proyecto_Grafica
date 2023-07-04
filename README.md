@@ -2,6 +2,9 @@
 ## Integrantes
 - Miguel Angel Fernandez Villaquirán - 201941923
 - Alejandro Escobar Tafurt - 201941378
+- Alejandro Peñaranda Agudelo - 201941008
+- Juan Camilo Santa Gomez - 201943214
+- Diego Fernando Chaverra - 2019
 # Instrucciones de ejecución.
 - Clone el repositorio en su equipo.
 - Ubíquese en una terminal dentro de este.
