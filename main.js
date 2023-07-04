@@ -81,7 +81,7 @@ function init() {
 
     const ball = new THREE.Mesh(ballGeometry, ballMaterial);
     ball.castShadow = true;
-    ball.userData.down = false;
+   
 
     ball.position.x = radius * Math.cos(s);
     ball.position.z = radius * Math.sin(s);
@@ -93,7 +93,7 @@ function init() {
   // Luces moviles
   const bgeom = new THREE.SphereGeometry(0.1, 32, 16);
 
-  const pointLight1 = new THREE.PointLight(0xe46100, 60);
+  const pointLight1 = new THREE.PointLight(0xffee88, 30);
   pointLight1.position.set(0, 1.5, 0);
   pointLight1.castShadow = true;
   const bLightMat = new THREE.MeshLambertMaterial({
@@ -145,7 +145,7 @@ document.body.appendChild(renderer.domElement);
 
 window.addEventListener("resize", onWindowResize);
 
-// Ajustar a pestaña.
+// Ajustar a los cambios tamaño ventana.
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -165,33 +165,14 @@ function render() {
 
   for (let i = 0; i < sol.length; i++) {
     const luz = sol[i];
-    const previousHeight = luz.position.y;
+    luz.rotateY(0.004);
     luz.position.y = Math.abs(Math.sin(i * offset + time * velocidad) * height);
-
-    if (luz.position.y < previousHeight) {
-      luz.userData.down = true;
-    } else {
-      if (luz.userData.down === true) {
-        // Bola de abajo hacía arriba.
-        luz.userData.down = false;
-      }
-    }
   }
 
   for (let i = 0; i < objects.length; i++) {
     const ball = objects[i];
     ball.rotateY(0.004);
-    const previousHeight = ball.position.y;
     ball.position.y = Math.abs(Math.sin(i * offset + time * velocidad) * height);
-
-    if (ball.position.y < previousHeight) {
-      ball.userData.down = true;
-    } else {
-      if (ball.userData.down === true) {
-        // Bola de arriba hacía abajo.
-        ball.userData.down = false;
-      }
-    }
   }
 
   renderer.render(scene, camera);
