@@ -5,7 +5,7 @@ let scene, camera, renderer, clock, controls;
 
 const objects = [];
 
-const speed = 2.5;
+const speed = 1.0;
 const height = 3;
 const offset = 0.5;
 
@@ -13,6 +13,7 @@ function init() {
   scene = new THREE.Scene();
   clock = new THREE.Clock();
 
+  // Creación de camara.
   camera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -20,6 +21,11 @@ function init() {
     100
   );
 
+  // Añado imagen al fondo.
+  const textureLoader = new THREE.TextureLoader();
+  scene.background = textureLoader.load("/img/stars.jpg");
+
+  // Permito controlar la camara con el mouse.
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 1;
   controls.maxDistance = 25;
@@ -49,8 +55,10 @@ function init() {
   directionalLight.shadow.mapSize.y = 1024;
 
   // Suelo.
+  const floorTexture = textureLoader.load("/img/chess.jpg");
+
   const floorGeometry = new THREE.PlaneGeometry(10, 10);
-  const floorMaterial = new THREE.MeshLambertMaterial({ color: 0x4676b6 });
+  const floorMaterial = new THREE.MeshLambertMaterial({ map: floorTexture });
 
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = Math.PI * -0.5;
@@ -58,12 +66,14 @@ function init() {
   scene.add(floor);
 
   // Objetos.
+  const ballTexture = textureLoader.load("/img/nebula.jpg");
+
   const count = 5;
   const radius = 3;
 
-  const ballGeometry = new THREE.SphereGeometry(0.3, 32, 16);
+  const ballGeometry = new THREE.SphereGeometry(0.5, 32, 16);
   ballGeometry.translate(0, 0.3, 0);
-  const ballMaterial = new THREE.MeshLambertMaterial({ color: 0xcccccc });
+  const ballMaterial = new THREE.MeshLambertMaterial({ map: ballTexture });
 
   for (let i = 0; i < count; i++) {
     const s = (i / count) * Math.PI * 2;
@@ -82,13 +92,13 @@ function init() {
   animate();
 }
 
+// Renderizado de la escena.
 renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.useLegacyLights = false;
 document.body.appendChild(renderer.domElement);
-
 
 window.addEventListener("resize", onWindowResize);
 
@@ -105,6 +115,7 @@ function animate() {
   render();
 }
 
+// Animación.
 function render() {
   const time = clock.getElapsedTime();
 
